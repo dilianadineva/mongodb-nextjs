@@ -1,0 +1,42 @@
+h1 {
+  text-align: center;
+}
+.wrapper {
+  max-width: 1200px;
+  padding: 0 60px;
+  margin: auto;
+}
+.navbar {
+  padding: 20px;
+  margin-bottom: 20px;
+  background: rgb(43, 120, 192);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+.navbar .create-note,
+.navbar-brand {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.navbar-brand:hover,
+.create-note:hover {
+  color: whitesmoke;
+}
+
+.form-container {
+  width: 400px;
+  margin: 40px auto;
+}
+
+.notes-container {
+  text-align: center;
+  margin-top: 20px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 50px 10px;
+}
+
