@@ -1,8 +1,10 @@
 import Link from 'next/link';
-// import fetch from 'isomorphic-unfetch';
+import fetch from 'isomorphic-unfetch';
 import { Button, Card } from 'semantic-ui-react';
 
-const Index = ({ notes }) => {
+const Index = ({ notes, hostname, fetchurl }) => {
+  console.log('hostname: ', hostname);
+  console.log('fetchurl: ', fetchurl);
   return (
     <div className='notes-container'>
       <h1>Notes</h1>
@@ -35,12 +37,15 @@ const Index = ({ notes }) => {
   );
 };
 
-export async function getServerSideProps() {
-  const res = await fetch('http://localhost:3000/api/notes');
+export async function getServerSideProps(context) {
+  let hostname = context.req.headers.host;
+  let fetchurl=`http://${hostname}/api/notes`
+  const res = await fetch(`http://${hostname}/api/notes`);
   const { data } = await res.json();
-
   return {
     props: {
+      hostname,
+      fetchurl,
       notes: JSON.parse(JSON.stringify(data)), //issue#11993: https://github.com/vercel/next.js/issues/11993
     },
   };
