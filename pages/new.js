@@ -21,15 +21,21 @@ const NewNote = () => {
 
   const createNote = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/notes', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
-      });
-      router.push('/');
+      if (typeof window !== 'undefined') {
+        const hostname = window.location.origin;
+        console.log('defined', hostname);
+        const res = await fetch(`${hostname}/api/notes`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(form),
+        });
+        router.push('/');
+      } else {
+        console.log('undefined');
+      }
     } catch (error) {}
   };
 

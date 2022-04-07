@@ -27,10 +27,13 @@ function Note(note) {
 
   const deleteNote = async () => {
     try {
-      const deleted = await fetch(`http://localhost:3000/api/notes/${id}`, {
-        method: 'DELETE',
-      });
-      router.push('/');
+      if (typeof window !== 'undefined') {
+        const hostname = window.location.origin;
+        const deleted = await fetch(`${hostname}/api/notes/${id}`, {
+          method: 'DELETE',
+        });
+        router.push('/');
+      }
     } catch (error) {
       console.log(error);
     }
@@ -63,7 +66,8 @@ function Note(note) {
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
-  const res = await fetch(`http://localhost:3000/api/notes/${id}`);
+  let hostname = context.req.headers.host;
+  const res = await fetch(`http://${hostname}/api/notes/${id}`);
   const { data } = await res.json();
   return {
     props: data,

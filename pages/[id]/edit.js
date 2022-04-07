@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Button, Form, Loader } from 'semantic-ui-react';
 import { useRouter } from 'next/router';
 
-const EditNote = ({ note }) => {
+const EditNote = ({ note, hostname }) => {
   const [form, setForm] = useState({
     title: note.title,
     description: note.description,
@@ -26,7 +26,7 @@ const EditNote = ({ note }) => {
   const updateNote = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/notes/${router.query.id}`,
+        `http://${hostname}/api/notes/${router.query.id}`,
         {
           method: 'PUT',
           headers: {
@@ -111,10 +111,11 @@ const EditNote = ({ note }) => {
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
-  const res = await fetch(`http://localhost:3000/api/notes/${id}`);
+  let hostname = context.req.headers.host;
+  const res = await fetch(`http://${hostname}/api/notes/${id}`);
   const { data } = await res.json();
   return {
-    props: { note: data },
+    props: { note: data, hostname },
   };
 }
 
