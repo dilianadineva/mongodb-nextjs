@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import fetch from 'isomorphic-unfetch';
+import absoluteUrl from 'next-absolute-url';
 import { Button, Card } from 'semantic-ui-react';
 
 const Index = ({ notes }) => {
@@ -36,8 +37,8 @@ const Index = ({ notes }) => {
 };
 
 export async function getServerSideProps(context) {
-  let hostname = context.req.headers.host;
-  const res = await fetch(`http://${hostname}/api/notes`);
+  const { origin } = absoluteUrl(context.req);
+  const res = await fetch(`${origin}/api/notes`);
   const { data } = await res.json();
   return {
     props: {

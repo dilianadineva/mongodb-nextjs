@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
 // import fetch from 'isomorphic-unfetch';
+import absoluteUrl from 'next-absolute-url';
 import { Button, Form, Loader } from 'semantic-ui-react';
 import { useRouter } from 'next/router';
 
@@ -111,8 +111,9 @@ const EditNote = ({ note, hostname }) => {
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
+  const { origin } = absoluteUrl(context.req);
   let hostname = context.req.headers.host;
-  const res = await fetch(`http://${hostname}/api/notes/${id}`);
+  const res = await fetch(`${origin}/api/notes/${id}`);
   const { data } = await res.json();
   return {
     props: { note: data, hostname },

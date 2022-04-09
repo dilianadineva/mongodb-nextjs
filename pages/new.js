@@ -36,7 +36,9 @@ const NewNote = () => {
       } else {
         console.log('undefined');
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSubmit = (e) => {

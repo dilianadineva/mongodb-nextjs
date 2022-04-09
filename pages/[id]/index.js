@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
+import absoluteUrl from 'next-absolute-url';
 import { Button, Loader, Confirm, Container, Header } from 'semantic-ui-react';
 
 function Note(note) {
@@ -7,6 +8,7 @@ function Note(note) {
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
   const id = router.query.id;
+  console.log('note', note);
 
   useEffect(() => {
     if (isDeleting) {
@@ -66,8 +68,10 @@ function Note(note) {
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
-  let hostname = context.req.headers.host;
-  const res = await fetch(`http://${hostname}/api/notes/${id}`);
+  const { origin } = absoluteUrl(context.req);
+  // let hostname = context.req.headers.host;
+  // const proto = context.req.connection.encrypted ? 'https' : 'http';
+  const res = await fetch(`${origin}/api/notes/${id}`);
   const { data } = await res.json();
   return {
     props: data,
