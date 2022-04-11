@@ -8,7 +8,6 @@ function Note(note) {
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
   const id = router.query.id;
-  console.log('note', note);
 
   useEffect(() => {
     if (isDeleting) {
@@ -30,8 +29,8 @@ function Note(note) {
   const deleteNote = async () => {
     try {
       if (typeof window !== 'undefined') {
-        const hostname = window.location.origin;
-        const deleted = await fetch(`${hostname}/api/notes/${id}`, {
+        const origin = window.location.origin;
+        const deleted = await fetch(`${origin}/api/notes/${id}`, {
           method: 'DELETE',
         });
         router.push('/');

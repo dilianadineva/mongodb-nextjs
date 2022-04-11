@@ -4,7 +4,7 @@ import absoluteUrl from 'next-absolute-url';
 import { Button, Form, Loader } from 'semantic-ui-react';
 import { useRouter } from 'next/router';
 
-const EditNote = ({ note, hostname }) => {
+const EditNote = ({ note, origin }) => {
   const [form, setForm] = useState({
     title: note.title,
     description: note.description,
@@ -26,7 +26,7 @@ const EditNote = ({ note, hostname }) => {
   const updateNote = async () => {
     try {
       const res = await fetch(
-        `http://${hostname}/api/notes/${router.query.id}`,
+        `${origin}/api/notes/${router.query.id}`,
         {
           method: 'PUT',
           headers: {
@@ -112,11 +112,10 @@ const EditNote = ({ note, hostname }) => {
 export async function getServerSideProps(context) {
   const { id } = context.query;
   const { origin } = absoluteUrl(context.req);
-  let hostname = context.req.headers.host;
   const res = await fetch(`${origin}/api/notes/${id}`);
   const { data } = await res.json();
   return {
-    props: { note: data, hostname },
+    props: { note: data, origin },
   };
 }
 
